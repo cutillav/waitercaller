@@ -1,0 +1,7 @@
+# virtualenv
+.Python
+local
+bin
+lib
+include
+*.py[cod]
