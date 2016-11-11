@@ -12,12 +12,6 @@ from flask_login import login_user
 from flask_login import logout_user
 from flask_login import current_user
 
-import config
-if config.test:
-    from mockdbhelper import MockDBHelper as DBHelper
-else:
-    from dbhelper import DBHelper
-
 from passwordhelper import PasswordHelper
 from bitlyhelper import BitlyHelper
 from user import User
@@ -25,6 +19,12 @@ from user import User
 from forms import RegistrationForm
 from forms import LoginForm
 from forms import CreateTableForm
+
+import config
+if config.test
+    from mockdbhelper import MockDBHelper as DBHelper
+else:
+    from dbhelper import DBHelper
 
 
 app = Flask(__name__)
@@ -113,7 +113,7 @@ def account_createtable():
     form = CreateTableForm(request.form)
     if form.validate():
         tableid = DB.add_table(form.tablenumber.data, current_user.get_id())
-        new_url = BH.shorten_url(config.base_url + "newrequest/" + str(tableid))
+        new_url = BH.shorten_url(config.base_url + "newrequest/" + tableid)
         DB.update_table(tableid, new_url)
         return redirect(url_for('account'))
     return render_template("account.html", createtableform=form, tables=DB.get_tables(current_user.get_id()))
@@ -129,10 +129,9 @@ def account_deletetable():
 
 @app.route("/newrequest/<tid>")
 def new_request(tid):
-    if DB.add_request(tid, datetime.datetime.now()):
-        return "Your request has been logged and a waiter will be with you shortly"
-    return "There is already a request pending for this table. Please be patient, a waiter will be there ASAP"
+    DB.add_request(tid, datetime.datetime.now())
+    return "Your request has been logged and a waiter will be with you shortly"
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(port=5000, debug=True)
