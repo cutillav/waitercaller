@@ -1,4 +1,6 @@
 # virtualenv
+config.py
+*.pyc
 .Python
 local
 bin
